@@ -238,7 +238,7 @@ For example, the Minimal profile, `Devel::REPL::Profile::Minimal`:
       with 'Devel::REPL::Profile';  ## seem perldoc Muse
 
       sub plugins { ### plugins we want to be loaded
-        qw(History LexEnv DDS Packages Commands MultiLine::PPI);
+        qw(History Packages Commands);
       }
 
       ### the only required sub for profile,
