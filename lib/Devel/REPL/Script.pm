@@ -22,6 +22,14 @@ has 'profile' => (
   default  => sub { $ENV{DEVEL_REPL_PROFILE} || 'Minimal' },
 );
 
+has 'incdir' => (
+  is       => 'ro',
+  isa      => 'ArrayRef[Str]',
+  traits   => ['MooseX::Getopt::Meta::Attribute::Trait'],
+  default  => sub { [] },
+  cmd_flag => 'I'
+);
+
 has '_repl' => (
   is => 'ro', isa => 'Devel::REPL',
   default => sub { Devel::REPL->new() }
@@ -31,6 +39,7 @@ sub BUILD {
   my ($self) = @_;
   $self->load_profile($self->profile);
   $self->load_rcfile($self->rcfile);
+  $self->add_inc();
 }
 
 sub load_profile {
@@ -51,6 +60,12 @@ sub load_rcfile {
   }
 
   $self->apply_script($rc_file);
+}
+
+sub add_inc {
+    my $self = shift;
+    unshift @INC, @{$self->incdir};
+    return;
 }
 
 sub apply_script {
